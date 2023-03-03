@@ -1,6 +1,8 @@
 package nih.gov;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class App1 {
@@ -22,7 +24,7 @@ public class App1 {
         for(Student st:studentList)
             System.out.println(st.toString());
 
-        System.out.println("-----------Ranking graduated student gpa>70 level advanced-----------");
+        System.out.println("-----------graduated student gpa>70 level advanced-----------");
 
         for(Student st:studentList) {
             if(st.getLevel().equals(LEVEL.ADVANCED) && st.getGpa()>=70) {
@@ -31,15 +33,28 @@ public class App1 {
 
         }
 
-        //todo
-        System.out.println("-----------Ranking all students-----------");
+        System.out.println("-----------Ranking all students assending-----------");
 
-        for(Student st:studentList) {
+       // studentList.forEach(st -> System.out.println(st.toString()));
 
-                System.out.println(st.toString());
+        Collections.sort(studentList, new Comparator< Student >() {
+            @Override
+            public int compare(Student o1, Student o2) {
+                return (o1.getGpa())-(o2.getGpa());
+            }
+        });
 
+        Collections.sort(studentList, (o1, o2) -> (o1.getGpa()-(o2.getGpa())  ));
+        System.out.println("Ascending order => " + studentList);
 
-        }
+        //
+
+        // using Comparator.comparing() method
+
+        System.out.println("-----------Ranking all students descending using comparator-----------");
+        Collections.sort(studentList, Comparator.comparing(Student::getGpa));
+
+        System.out.println("Using comparator Descending order => " + studentList);
     }
 
     private static List<Student> takeExam() {
@@ -52,7 +67,7 @@ public class App1 {
             st.setGrades(grades);
             st.setGpa((int) grade0/3);
 
-            if(grade0>=50) {
+            if(grade0>=30) {
                 st.setLevel(LEVEL.INTERMEDIATE);
                 int grade1= (int) (Math.random() * 100);
                 grades[1]=grade1;
@@ -75,4 +90,16 @@ public class App1 {
 
         return studentList;
     }
+
+
 }
+
+class MySort1 implements Comparator < Student > {
+
+    @Override
+    public int compare(Student o1, Student o2) {
+        return (o2.getGpa() - o1.getGpa());
+    }
+
+}
+
